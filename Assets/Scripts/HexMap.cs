@@ -15,6 +15,10 @@ public class HexMap : MonoBehaviour
     public Material MatLvl1;
     public Material MatLvl2;
 
+    public Mesh MeshLvl0;
+    public Mesh MeshLvl1;
+    public Mesh MeshLvl2;
+
 
     private Hex[,] hexes;
     private Dictionary<Hex, GameObject> hexToGameObjectMap;
@@ -82,16 +86,22 @@ public class HexMap : MonoBehaviour
             Hex hex = entry.Key;
 
             MeshRenderer mr = hexGO.GetComponentInChildren<MeshRenderer>();
+            MeshFilter mf = hexGO.GetComponentInChildren<MeshFilter>();
 
             //set terrain material according to height
-            //TODO: Update this to it's own class
-            if(hex.Elevation >= 0.7f)
+            //TODO: Update this to it's own class - Probably part of the BIOME class?
+            if(hex.Elevation >= 0.7f){
                 mr.material = MatLvl2;
-            else if(hex.Elevation >= 0.55f && hex.Elevation < 0.7f)
+                mf.mesh = MeshLvl2;
+            }                
+            else if(hex.Elevation >= 0.55f && hex.Elevation < 0.7f){
                 mr.material = MatLvl1;
-            else
+                mf.mesh = MeshLvl1;
+            }
+            else{
                 mr.material = MatLvl0;
-
+                mf.mesh = MeshLvl0;
+            }
         }
     }
 }
