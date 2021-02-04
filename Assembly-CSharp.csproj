@@ -36,6 +36,10 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Biomes\DesertBiome.cs" />
+     <Compile Include="Assets\Scripts\Biomes\GrasslandBiome.cs" />
+     <Compile Include="Assets\Scripts\Biomes\IBiome.cs" />
+     <Compile Include="Assets\Scripts\Biomes\TundraBiome.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\Hex.cs" />
      <Compile Include="Assets\Scripts\HexMap.cs" />

@@ -9,34 +9,52 @@ public class HexMap : MonoBehaviour
     public int NumCols = 12;
     public int NumRows = 8;
     public GameObject HexPrefab;
-
-    //TODO: move these out to its class/array
-    public Material MatLvl0;
-    public Material MatLvl1;
-    public Material MatLvl2;
-
     public Mesh MeshLvl0;
     public Mesh MeshLvl1;
     public Mesh MeshLvl2;
 
+    public enum BiomesEnum { Grassland, Desert, Tundra };
 
+    public BiomesEnum MapBiome;
+
+    private IBiome biome;
     private Hex[,] hexes;
     private Dictionary<Hex, GameObject> hexToGameObjectMap;
 
     void Start()
     {
-        GenerateMap();
+        SetupBiome();
+        GenerateMap();        
     }
 
     void Update()
     {
     }
 
+    public void SetupBiome()
+    {
+        switch(MapBiome){
+            case BiomesEnum.Desert:
+                biome = new DesertBiome();
+            break;
+
+            case BiomesEnum.Grassland:
+                biome = new GrasslandBiome();
+            break;
+
+            case BiomesEnum.Tundra:
+                biome = new TundraBiome();
+            break;
+        }
+
+        biome.SetTerrainMaterials();
+    }
+
     public void GenerateMap() {
 
         hexes = new Hex[NumCols, NumRows];
         hexToGameObjectMap = new Dictionary<Hex, GameObject>();
-
+        
         for (int r = 0; r < NumRows; r++)
         {
             //offset to create rectangle from rhombus
@@ -67,8 +85,6 @@ public class HexMap : MonoBehaviour
                 //assign elevation to hex
                 hex.Elevation += noiseSample;
 
-                // Debug.Log(string.Format("{0},{1} E:{2}", q, r, hex.Elevation));
-
                 //text mesh element
                 hexGO.GetComponentInChildren<TextMesh>().text = string.Format("{0},{1}", q, r);
             }
@@ -88,18 +104,20 @@ public class HexMap : MonoBehaviour
             MeshRenderer mr = hexGO.GetComponentInChildren<MeshRenderer>();
             MeshFilter mf = hexGO.GetComponentInChildren<MeshFilter>();
 
-            //set terrain material according to height
-            //TODO: Update this to it's own class - Probably part of the BIOME class?
-            if(hex.Elevation >= 0.7f){
-                mr.material = MatLvl2;
+            if(hex.Elevation >= biome.Level2ElevationThreshold){
+                mr.material = (Material)Resources.Load(biome.Materials[2]);
                 mf.mesh = MeshLvl2;
             }                
-            else if(hex.Elevation >= 0.55f && hex.Elevation < 0.7f){
-                mr.material = MatLvl1;
+            else if(hex.Elevation >= biome.Level1ElevationThreshold && hex.Elevation < biome.Level2ElevationThreshold){
+                mr.material = (Material)Resources.Load(biome.Materials[1]);
                 mf.mesh = MeshLvl1;
             }
-            else{
-                mr.material = MatLvl0;
+            else if(hex.Elevation >= biome.Level0ElevationThreshold && hex.Elevation < biome.Level1ElevationThreshold){
+                mr.material = (Material)Resources.Load(biome.Materials[0]);
+                mf.mesh = MeshLvl0;
+            }
+            else {
+                mr.material = (Material)Resources.Load(biome.Materials[3]);
                 mf.mesh = MeshLvl0;
             }
         }
