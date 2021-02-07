@@ -72,18 +72,31 @@ public class HexMap : MonoBehaviour
 
                 hexToGameObjectMap[hex] = hexGO;
                 
-                //add perlin noise vir elevation                
-                Vector2 noiseOffset = new Vector2( Random.Range(0f, 1f), Random.Range(0f, 1f) );
-                float noiseSample = Mathf.PerlinNoise(q + noiseOffset.x, r + noiseOffset.y);
+                //add perlin noise for elevation                
+                Vector2 noiseOffsetElevation = new Vector2( Random.Range(0f, 1f), Random.Range(0f, 1f) );
+                float noiseSample = Mathf.PerlinNoise(q + noiseOffsetElevation.x, r + noiseOffsetElevation.y);
+
+                //add perlin noise for moisture
+                Vector2 noiseOffsetMoisture = new Vector2( Random.Range(0f, 1f), Random.Range(0f, 1f) );
+                float noiseSampleMoisture = Mathf.PerlinNoise(q + noiseOffsetMoisture.x, r + noiseOffsetMoisture.y);
 
                 //bounds the perlin noise to 0 - 1
+                //TODO: determine highest / flatten out using MATHF
                 if(noiseSample > 1)
                     noiseSample = 1;
                 if(noiseSample < 0)
                     noiseSample = 0;
 
+                if(noiseSampleMoisture > 1)
+                    noiseSampleMoisture = 1;
+                if(noiseSampleMoisture < 0)
+                    noiseSampleMoisture = 0;   
+
                 //assign elevation to hex
                 hex.Elevation += noiseSample;
+
+                //assign moisture to hex
+                hex.Moisture += noiseSampleMoisture;
 
                 //text mesh element
                 hexGO.GetComponentInChildren<TextMesh>().text = string.Format("{0},{1}", q, r);
@@ -103,6 +116,8 @@ public class HexMap : MonoBehaviour
 
             MeshRenderer mr = hexGO.GetComponentInChildren<MeshRenderer>();
             MeshFilter mf = hexGO.GetComponentInChildren<MeshFilter>();
+
+            Debug.Log(hex.Moisture);
 
             if(hex.Elevation >= biome.Level2ElevationThreshold){
                 mr.material = (Material)Resources.Load(biome.Materials[2]);

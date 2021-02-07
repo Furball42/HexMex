@@ -9,6 +9,7 @@ public class Hex
     public readonly int R;
     public readonly int S;
     public float Elevation;
+    public float Moisture;
 
     static readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3) / 2;
 

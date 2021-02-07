@@ -9,6 +9,7 @@ public class DesertBiome : IBiome
     public float Level2ElevationThreshold { get; set; } = 0.7f;
     public float LevelRiverElevationThreshold { get; set; } = -1.0f;
     public float PrecipitationThreshold { get; set; } = 0.0f;
+    public float MoistureThreshold { get; set; } = 1.1f;
     public float FoilageRatio { get; set; } = 0.0f;
     public float ScatterTerrainRatio { get; set; } = 0.0f;
     public string[] Materials { get; set; } = new string[4];

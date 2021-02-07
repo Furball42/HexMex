@@ -8,6 +8,7 @@ public interface IBiome{
     float Level2ElevationThreshold { get; set; }
     float LevelRiverElevationThreshold { get; set; }
     float PrecipitationThreshold { get; set; }
+    float MoistureThreshold { get; set; }
     float FoilageRatio { get; set; }
     float ScatterTerrainRatio { get; set; }
     string[] Materials { get; set; }

@@ -9,6 +9,7 @@ public class TundraBiome : IBiome
     public float Level2ElevationThreshold { get; set; } = 0.5f;
     public float LevelRiverElevationThreshold { get; set; } = 0.09f;
     public float PrecipitationThreshold { get; set; } = 0.0f;
+    public float MoistureThreshold { get; set; } = 0.8f;
     public float FoilageRatio { get; set; } = 0.0f;
     public float ScatterTerrainRatio { get; set; } = 0.0f;
     public string[] Materials { get; set; } = new string[4];
