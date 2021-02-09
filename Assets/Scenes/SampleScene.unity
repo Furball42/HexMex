@@ -395,10 +395,15 @@ MonoBehaviour:
   NumRows: 12
   HexPrefab: {fileID: 3700783815788476239, guid: 11f07e896efbbe1418e5a9db6eba0431,
     type: 3}
+  Board: {fileID: 4016120564670200947, guid: ccc2f8ed39a07cc44a451a9f3ac9e219, type: 3}
   MeshLvl0: {fileID: 2534964839176971238, guid: 41b2c0ab69a56004eb41dd0d250b31c5,
     type: 3}
   MeshLvl1: {fileID: 2534964839176971238, guid: bac8b85a28c2a204c9b6eff7a8dea3cd,
     type: 3}
   MeshLvl2: {fileID: 2534964839176971238, guid: 433a050ae2a2077489dc286ba9abbe22,
     type: 3}
+  GrasslandTreeMeshes:
+  - {fileID: 6700939144797488707, guid: c43ce1a0da724ce4a92fe65579e07dac, type: 3}
+  - {fileID: 3649334157100487587, guid: 56aae2cd6b49c34498f876737e7727ef, type: 3}
+  - {fileID: 4458562467662263352, guid: edb53260dbdcd92498201f2b2f02dbc5, type: 3}
   MapBiome: 0

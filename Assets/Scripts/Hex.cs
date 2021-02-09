@@ -10,6 +10,9 @@ public class Hex
     public readonly int S;
     public float Elevation;
     public float Moisture;
+    public int Level = 0;
+
+    public bool HasTree = false;
 
     static readonly float WIDTH_MULTIPLIER = Mathf.Sqrt(3) / 2;
 

@@ -16,9 +16,9 @@ public class DesertBiome : IBiome
 
     public void SetTerrainMaterials()
     {
-        Materials[0] = "Materials/Desert_0";
-        Materials[1] = "Materials/Desert_1";
-        Materials[2] = "Materials/Desert_2";
-        Materials[3] = "Materials/River_0";
+        Materials[0] = "Materials/Testing/Desert_0";
+        Materials[1] = "Materials/Testing/Desert_1";
+        Materials[2] = "Materials/Testing/Desert_2";
+        Materials[3] = "Materials/Testing/River_0";
     }
 }

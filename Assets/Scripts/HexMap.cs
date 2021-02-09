@@ -9,11 +9,12 @@ public class HexMap : MonoBehaviour
     public int NumCols = 12;
     public int NumRows = 8;
     public GameObject HexPrefab;
+    public GameObject Board;
     public Mesh MeshLvl0;
     public Mesh MeshLvl1;
     public Mesh MeshLvl2;
-
     public enum BiomesEnum { Grassland, Desert, Tundra };
+    public GameObject[] GrasslandTreeMeshes;
 
     public BiomesEnum MapBiome;
 
@@ -99,12 +100,14 @@ public class HexMap : MonoBehaviour
                 hex.Moisture += noiseSampleMoisture;
 
                 //text mesh element
-                hexGO.GetComponentInChildren<TextMesh>().text = string.Format("{0},{1}", q, r);
+                hexGO.GetComponentInChildren<TextMesh>().text = string.Empty;
+                // hexGO.GetComponentInChildren<TextMesh>().text = string.Format("{0},{1}", q, r);
             }
 
         }
 
         UpdateTileVisuals();
+        AddBoard();
     }
 
     public void UpdateTileVisuals(){
@@ -117,25 +120,66 @@ public class HexMap : MonoBehaviour
             MeshRenderer mr = hexGO.GetComponentInChildren<MeshRenderer>();
             MeshFilter mf = hexGO.GetComponentInChildren<MeshFilter>();
 
-            Debug.Log(hex.Moisture);
-
             if(hex.Elevation >= biome.Level2ElevationThreshold){
                 mr.material = (Material)Resources.Load(biome.Materials[2]);
                 mf.mesh = MeshLvl2;
+                hex.Level = 2;
             }                
             else if(hex.Elevation >= biome.Level1ElevationThreshold && hex.Elevation < biome.Level2ElevationThreshold){
                 mr.material = (Material)Resources.Load(biome.Materials[1]);
                 mf.mesh = MeshLvl1;
+                hex.Level = 1;
             }
             else if(hex.Elevation >= biome.Level0ElevationThreshold && hex.Elevation < biome.Level1ElevationThreshold){
                 mr.material = (Material)Resources.Load(biome.Materials[0]);
                 mf.mesh = MeshLvl0;
+                hex.Level = 0;
             }
             else {
                 mr.material = (Material)Resources.Load(biome.Materials[3]);
                 mf.mesh = MeshLvl0;
+                hex.Level = 0;
             }
+
+            DrawTrees(hex, hexGO, mr);
         }
+    }
+
+    private void DrawTrees(Hex hex, GameObject hexGO, MeshRenderer mr){
+        //testing for tree location
+        Material testMat = (Material)Resources.Load("Materials/Testing/Tree_test");
+        if(hex.Moisture >= biome.MoistureThreshold && GrasslandTreeMeshes.Length > 0){
+            mr.material = testMat;
+            GameObject anchorGO;
+
+            //find first child CHANGE THIS
+            anchorGO = hexGO.transform.GetChild(0).gameObject;
+
+            //find true anchor irt Elevation
+            Vector3 anchorPosition = hexGO.transform.position;
+            if(hex.Level == 1)
+                anchorPosition.y += 1;
+            if(hex.Level == 2)
+                anchorPosition.y += 2;
+
+            //random tree
+            GameObject treePrefab = GrasslandTreeMeshes[Random.Range(0, 3)];
+
+            //attachObject to anchor point;
+            GameObject newTreeGO = Instantiate(treePrefab, anchorPosition, Quaternion.identity, this.transform);
+                                    
+            //set new parent to tile
+            newTreeGO.transform.SetParent(hexGO.transform);
+
+            //set hex class variable
+            hex.HasTree = true;
+
+        }
+    }
+
+    private void AddBoard(){
+        Vector3 boardPosition = new Vector3(13.45f, -0.5f, 8.45f);
+        Instantiate(Board, boardPosition, Quaternion.identity, this.transform);
     }
 }
     
