@@ -14,18 +14,19 @@ public class HexMap : MonoBehaviour
     public Mesh MeshLvl1;
     public Mesh MeshLvl2;
     public enum BiomesEnum { Grassland, Desert, Tundra };
-    public GameObject[] GrasslandTreeMeshes;
-
+    public GameObject[] GrasslandTreeMeshes; //probs gonna change
     public BiomesEnum MapBiome;
+    public PlayerController PlayerController; //gotta change this - probably game controller
 
     private IBiome biome;
-    private Hex[,] hexes;
-    private Dictionary<Hex, GameObject> hexToGameObjectMap;
+    public Hex[,] hexes; //this must be private?
+    public Dictionary<Hex, GameObject> HexToGameObjectMap;
 
     void Start()
     {
         SetupBiome();
-        GenerateMap();        
+        GenerateMap();
+        PlayerController.GeneratePlayerMex();
     }
 
     void Update()
@@ -54,7 +55,10 @@ public class HexMap : MonoBehaviour
     public void GenerateMap() {
 
         hexes = new Hex[NumCols, NumRows];
-        hexToGameObjectMap = new Dictionary<Hex, GameObject>();
+        HexToGameObjectMap = new Dictionary<Hex, GameObject>();
+        
+        //this has gotta change
+        bool hasAssignedAsStart = false;
         
         for (int r = 0; r < NumRows; r++)
         {
@@ -65,13 +69,20 @@ public class HexMap : MonoBehaviour
 
                 Hex hex = new Hex(q, r);
                 // hexes[q, r] = hex;
+
+                //TEMP
+                if(hasAssignedAsStart)
+                {
+                    hex.IsStartingPosition = true;
+                    hasAssignedAsStart = true;
+                }
                 
                 //set initial params
                 hex.Elevation = 0f;
 
                 GameObject hexGO = Instantiate(HexPrefab, hex.Position(), Quaternion.identity, this.transform);
 
-                hexToGameObjectMap[hex] = hexGO;
+                HexToGameObjectMap[hex] = hexGO;
                 
                 //add perlin noise for elevation                
                 Vector2 noiseOffsetElevation = new Vector2( Random.Range(0f, 1f), Random.Range(0f, 1f) );
@@ -112,7 +123,7 @@ public class HexMap : MonoBehaviour
 
     public void UpdateTileVisuals(){
 
-        foreach(KeyValuePair<Hex, GameObject> entry in hexToGameObjectMap)
+        foreach(KeyValuePair<Hex, GameObject> entry in HexToGameObjectMap)
         {
             GameObject hexGO = entry.Value;
             Hex hex = entry.Key;
