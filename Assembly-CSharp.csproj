@@ -45,6 +45,8 @@
      <Compile Include="Assets\Scripts\HexMap.cs" />
      <Compile Include="Assets\Scripts\MouseController.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\UI\MexUIController.cs" />
+     <Compile Include="Assets\Scripts\UI\TerrainUIController.cs" />
      <Compile Include="Assets\Scripts\Units\IUnit.cs" />
      <Compile Include="Assets\Scripts\Units\Mex.cs" />
      <Compile Include="Assets\Scripts\Units\Pilot.cs" />

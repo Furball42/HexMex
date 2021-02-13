@@ -5,6 +5,7 @@ using UnityEngine;
 public class MouseController : MonoBehaviour
 {
     public GameObject SelectedObject;
+    public GameObject HoveredObject;
 
     // Start is called before the first frame update
     void Start()
@@ -27,11 +28,8 @@ public class MouseController : MonoBehaviour
         if(hit){
 
             if(hitInfo.transform.gameObject.layer == 8){
-                Debug.Log("TERRAIN");
-            }
-
-            if(hitInfo.transform.gameObject.layer == 9){
-                Debug.Log("MEX");
+                Debug.Log(hitInfo.transform.gameObject.tag);
+                SetHoveredObject(hitInfo.transform.gameObject);
             }
         }
     }
@@ -55,6 +53,14 @@ public class MouseController : MonoBehaviour
                     ClearSelectedObject();
             }
         } 
+    }
+
+    private void SetHoveredObject(GameObject hoveredGO){
+        if(HoveredObject != null)
+            HoveredObject = null;
+
+        if(hoveredGO.tag == "Terrain")
+            HoveredObject = hoveredGO;
     }
 
     private void SelectObject(GameObject hitGO){
