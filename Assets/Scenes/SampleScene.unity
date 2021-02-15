@@ -1102,11 +1102,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44f4bbb6ae62b4f42aebfd430740db04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TerrainType: {fileID: 0}
-  TerrainElevation: {fileID: 0}
-  TerrainCover: {fileID: 0}
-  MouseController: {fileID: 0}
-  HexMap: {fileID: 0}
+  TerrainType: {fileID: 1962870069}
+  TerrainElevation: {fileID: 1657697425}
+  TerrainCover: {fileID: 1336893927}
+  MouseController: {fileID: 179079464}
+  HexMap: {fileID: 1345597596}
 --- !u!1 &1223014533
 GameObject:
   m_ObjectHideFlags: 0

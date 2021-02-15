@@ -21,6 +21,7 @@ public class HexMap : MonoBehaviour
     private IBiome biome;
     public Hex[,] hexes; //this must be private?
     public Dictionary<Hex, GameObject> HexToGameObjectMap;
+    public Dictionary<GameObject, Hex> GameObjectToHexMap;
 
     void Start()
     {
@@ -56,6 +57,7 @@ public class HexMap : MonoBehaviour
 
         hexes = new Hex[NumCols, NumRows];
         HexToGameObjectMap = new Dictionary<Hex, GameObject>();
+        GameObjectToHexMap = new Dictionary<GameObject, Hex>();
         
         //this has gotta change
         bool hasAssignedAsStart = false;
@@ -81,8 +83,8 @@ public class HexMap : MonoBehaviour
                 hex.Elevation = 0f;
 
                 GameObject hexGO = Instantiate(HexPrefab, hex.Position(), Quaternion.identity, this.transform);
-
                 HexToGameObjectMap[hex] = hexGO;
+                GameObjectToHexMap[hexGO] = hex;;
                 
                 //add perlin noise for elevation                
                 Vector2 noiseOffsetElevation = new Vector2( Random.Range(0f, 1f), Random.Range(0f, 1f) );
@@ -130,25 +132,30 @@ public class HexMap : MonoBehaviour
 
             MeshRenderer mr = hexGO.GetComponentInChildren<MeshRenderer>();
             MeshFilter mf = hexGO.GetComponentInChildren<MeshFilter>();
+            MeshCollider mc = hexGO.GetComponentInChildren<MeshCollider>(); //to set new colliders for raycast
 
             if(hex.Elevation >= biome.Level2ElevationThreshold){
                 mr.material = (Material)Resources.Load(biome.Materials[2]);
                 mf.mesh = MeshLvl2;
+                mc.sharedMesh = MeshLvl2;
                 hex.Level = 2;
             }                
             else if(hex.Elevation >= biome.Level1ElevationThreshold && hex.Elevation < biome.Level2ElevationThreshold){
                 mr.material = (Material)Resources.Load(biome.Materials[1]);
                 mf.mesh = MeshLvl1;
+                mc.sharedMesh = MeshLvl1;
                 hex.Level = 1;
             }
             else if(hex.Elevation >= biome.Level0ElevationThreshold && hex.Elevation < biome.Level1ElevationThreshold){
                 mr.material = (Material)Resources.Load(biome.Materials[0]);
                 mf.mesh = MeshLvl0;
+                mc.sharedMesh = MeshLvl0;
                 hex.Level = 0;
             }
             else {
                 mr.material = (Material)Resources.Load(biome.Materials[3]);
                 mf.mesh = MeshLvl0;
+                mc.sharedMesh = MeshLvl0;
                 hex.Level = 0;
             }
 

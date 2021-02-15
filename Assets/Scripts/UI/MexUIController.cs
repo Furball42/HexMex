@@ -23,14 +23,14 @@ public class MexUIController : MonoBehaviour
             ClearUI();
     }
 
-    public void UpdateSelectedMexStats(Mex mex){
+    void UpdateSelectedMexStats(Mex mex){
         MexName.text = string.Format("[{0}]", "Test Mex");
         MexSpeed.text = string.Format("Speed: {0}", mex.Unit.Speed);
         MexArmor.text = string.Format("Armor: {0}", mex.Unit.Armor);
         MexInternal.text = string.Format("Internal: {0}", mex.Unit.Internal);
     }
 
-    private void ClearUI(){
+    void ClearUI(){
         MexName.text = string.Empty;
         MexSpeed.text = string.Empty;
         MexArmor.text = string.Empty;
