@@ -11,6 +11,7 @@ public class TerrainUIController : MonoBehaviour
     public Text TerrainCover;
     public MouseController MouseController;
     public HexMap HexMap;
+    public Material HighLightMaterial;
 
     // Update is called once per frame
     void Update()
@@ -39,7 +40,8 @@ public class TerrainUIController : MonoBehaviour
 
         var model = hexGO.transform.Find("HexModel");
         MeshRenderer mr = model.transform.GetComponent<MeshRenderer>();
-        mr.material.color = Color.red;
+        mr.material = HighLightMaterial;
+        // mr.material.color = Color.red;
     }
 
     void ClearUI(){

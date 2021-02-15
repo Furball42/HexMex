@@ -163,6 +163,42 @@ public class HexMap : MonoBehaviour
         }
     }
 
+    public void UpdateVisualsForSingleHex(GameObject hexGO){
+
+        Debug.Log("A");
+
+        Hex hex = GameObjectToHexMap[hexGO];
+
+        MeshRenderer mr = hexGO.GetComponentInChildren<MeshRenderer>();
+        MeshFilter mf = hexGO.GetComponentInChildren<MeshFilter>();
+        MeshCollider mc = hexGO.GetComponentInChildren<MeshCollider>(); //to set new colliders for raycast
+
+        if(hex.Elevation >= biome.Level2ElevationThreshold){
+            mr.material = (Material)Resources.Load(biome.Materials[2]);
+            mf.mesh = MeshLvl2;
+            mc.sharedMesh = MeshLvl2;
+            hex.Level = 2;
+        }                
+        else if(hex.Elevation >= biome.Level1ElevationThreshold && hex.Elevation < biome.Level2ElevationThreshold){
+            mr.material = (Material)Resources.Load(biome.Materials[1]);
+            mf.mesh = MeshLvl1;
+            mc.sharedMesh = MeshLvl1;
+            hex.Level = 1;
+        }
+        else if(hex.Elevation >= biome.Level0ElevationThreshold && hex.Elevation < biome.Level1ElevationThreshold){
+            mr.material = (Material)Resources.Load(biome.Materials[0]);
+            mf.mesh = MeshLvl0;
+            mc.sharedMesh = MeshLvl0;
+            hex.Level = 0;
+        }
+        else {
+            mr.material = (Material)Resources.Load(biome.Materials[3]);
+            mf.mesh = MeshLvl0;
+            mc.sharedMesh = MeshLvl0;
+            hex.Level = 0;
+        }
+    }
+
     private void DrawTrees(Hex hex, GameObject hexGO, MeshRenderer mr){
         //testing for tree location
         Material testMat = (Material)Resources.Load("Materials/Testing/Tree_test");

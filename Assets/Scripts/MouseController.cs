@@ -6,6 +6,7 @@ public class MouseController : MonoBehaviour
 {
     public GameObject SelectedObject;
     public GameObject HoveredObject;    
+    public HexMap HexMap;
 
     // Start is called before the first frame update
     void Start()
@@ -55,10 +56,17 @@ public class MouseController : MonoBehaviour
     }
 
     private void SetHoveredObject(GameObject hoveredGO){
-        if(HoveredObject != null)
-            HoveredObject = null;
+        
+        // if(HoveredObject != null)
+        //     HoveredObject = null;
 
-        if(hoveredGO.tag == "Terrain"){
+        if(hoveredGO.tag == "Terrain"){            
+            
+            Debug.Log(HoveredObject);
+
+            if (hoveredGO != HoveredObject && HoveredObject != null)
+                HexMap.UpdateVisualsForSingleHex(HoveredObject);
+
             HoveredObject = hoveredGO;
         }            
     }

@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Units\Mex.cs" />
      <Compile Include="Assets\Scripts\Units\Pilot.cs" />
      <Compile Include="Assets\Scripts\Units\TextMex.cs" />
+     <None Include="Assets\Shaders\WireframeShader.shader" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.19f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
