@@ -8,6 +8,7 @@ public class Mex : MonoBehaviour
     public GameObject HexMap;
     public Pilot pilot;
     public IUnit Unit;
+    public Hex Hex;
 
     // Start is called before the first frame update
     void Start()
@@ -19,5 +20,9 @@ public class Mex : MonoBehaviour
     void Update()
     {
     
+    }
+
+    public void SetMexHex(Hex hex){
+        Hex = hex;
     }
 }

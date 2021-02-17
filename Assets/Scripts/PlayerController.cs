@@ -41,7 +41,12 @@ public class PlayerController : MonoBehaviour
         //arbitrary - needs to change
         anchorPosition.y += 1.5f;
 
-        var mexGO = Instantiate(firstMex, anchorPosition, Quaternion.identity, PlayerMexContainer.transform);
-           
+        //test gethex
+        var startHex = hexMap.GetHexAt(2,5);
+        var startHexGO = hexMap.HexToGameObjectMap[startHex];
+
+        GameObject mexGO = Instantiate(firstMex, startHexGO.transform.position, Quaternion.identity, PlayerMexContainer.transform);
+        Mex mex = mexGO.GetComponent<Mex>();
+        mex.SetMexHex(startHex);
     }
 }

@@ -375,6 +375,7 @@ MonoBehaviour:
   MexArmor: {fileID: 285510560}
   MexInternal: {fileID: 1019880588}
   MouseController: {fileID: 179079464}
+  HexMap: {fileID: 1345597596}
 --- !u!1 &378993513
 GameObject:
   m_ObjectHideFlags: 0

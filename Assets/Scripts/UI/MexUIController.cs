@@ -10,14 +10,18 @@ public class MexUIController : MonoBehaviour
     public Text MexArmor;
     public Text MexInternal;
     public MouseController MouseController;
+    private Mex SelectedMex;
+    public HexMap HexMap;
 
-    // Update is called once per frame
+    //REFACTOR TO PROPERLY HANDLE HTE SELECTEDMEX
+    
     void Update()
     {
         if(MouseController.SelectedObject != null)
         {
-            Mex m = MouseController.SelectedObject.GetComponent<Mex>();
-            UpdateSelectedMexStats(m);
+            SelectedMex = MouseController.SelectedObject.GetComponent<Mex>();
+            UpdateSelectedMexStats(SelectedMex);
+            HighlightPossibleMovementHexes(SelectedMex);
         }
         else
             ClearUI();
@@ -30,10 +34,36 @@ public class MexUIController : MonoBehaviour
         MexInternal.text = string.Format("Internal: {0}", mex.Unit.Internal);
     }
 
+    void HighlightPossibleMovementHexes(Mex mex){
+
+        // Hex h = HexMap.GetHexAt(SelectedMex.Hex.Q, SelectedMex.Hex.R);
+        // GameObject hexGO = HexMap.HexToGameObjectMap[h];
+        // GameObject model = hexGO.transform.Find("HexModel").gameObject;
+        // MeshRenderer mr = model.GetComponentInChildren<MeshRenderer>();
+        // MeshFilter mf = model.GetComponentInChildren<MeshFilter>();
+        // MeshCollider mc = model.GetComponentInChildren<MeshCollider>();
+        // mr.material.color = Color.red;
+
+        Hex[] listOfPossibleMovement = HexMap.GetHexesWithinRangeOf(SelectedMex.Hex, SelectedMex.Unit.Speed);
+        Debug.Log(listOfPossibleMovement.Length);
+        foreach(Hex h in listOfPossibleMovement){
+            // Debug.Log(h.Q + "/" + h.R);
+
+            //test
+            GameObject hexGO = HexMap.HexToGameObjectMap[h];
+            GameObject model = hexGO.transform.Find("HexModel").gameObject;
+            MeshRenderer mr = model.GetComponentInChildren<MeshRenderer>();
+            MeshFilter mf = model.GetComponentInChildren<MeshFilter>();
+            MeshCollider mc = model.GetComponentInChildren<MeshCollider>();
+            mr.material.color = Color.red;
+        }
+    }
+
     void ClearUI(){
         MexName.text = string.Empty;
         MexSpeed.text = string.Empty;
         MexArmor.text = string.Empty;
         MexInternal.text = string.Empty;
+        SelectedMex = null;
     }
 }

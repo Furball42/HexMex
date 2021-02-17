@@ -60,9 +60,7 @@ public class MouseController : MonoBehaviour
         // if(HoveredObject != null)
         //     HoveredObject = null;
 
-        if(hoveredGO.tag == "Terrain"){            
-            
-            Debug.Log(HoveredObject);
+        if(hoveredGO.tag == "Terrain"){                        
 
             if (hoveredGO != HoveredObject && HoveredObject != null)
                 HexMap.UpdateVisualsForSingleHex(HoveredObject);

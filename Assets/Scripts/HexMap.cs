@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 //HexMap is responsible for building the tactical map. This includes size and shape, and handling the terrain.
 
@@ -19,7 +20,8 @@ public class HexMap : MonoBehaviour
     public PlayerController PlayerController; //gotta change this - probably game controller
 
     private IBiome biome;
-    public Hex[,] hexes; //this must be private?
+    public Hex[,] hexes; //this must be private? //AAAA
+    Dictionary<Vector2, Hex> wtfDict = new Dictionary<Vector2, Hex>(); //BBBB
     public Dictionary<Hex, GameObject> HexToGameObjectMap;
     public Dictionary<GameObject, Hex> GameObjectToHexMap;
 
@@ -60,7 +62,9 @@ public class HexMap : MonoBehaviour
         GameObjectToHexMap = new Dictionary<GameObject, Hex>();
         
         //this has gotta change
-        bool hasAssignedAsStart = false;
+        bool hasAssignedAsStart = false;        
+
+        
         
         for (int r = 0; r < NumRows; r++)
         {
@@ -70,7 +74,10 @@ public class HexMap : MonoBehaviour
             for (int q = -r_offset; q < NumCols - r_offset; q++) {
 
                 Hex hex = new Hex(q, r);
-                // hexes[q, r] = hex;
+
+                //TODO: fix this shit
+                // hexes[q + r_offset, r] = hex;
+                wtfDict.Add(new Vector2(q, r), hex);
 
                 //TEMP
                 if(hasAssignedAsStart)
@@ -114,13 +121,78 @@ public class HexMap : MonoBehaviour
 
                 //text mesh element
                 hexGO.GetComponentInChildren<TextMesh>().text = string.Empty;
-                // hexGO.GetComponentInChildren<TextMesh>().text = string.Format("{0},{1}", q, r);
+                hexGO.GetComponentInChildren<TextMesh>().text = string.Format("{0},{1}", q, r);
             }
 
         }
 
         UpdateTileVisuals();
         AddBoard();
+    }
+
+    public Hex GetHexAt(int x, int y)
+    {
+        // var h = hexes[x,y];
+        // return h;
+
+        // Debug.Log("Hexes:" + hexes.Length);
+
+        if(wtfDict == null)
+        {
+            Debug.LogError("Hexes array not yet instantiated.");
+            return null;
+        }
+
+        try {
+
+            return wtfDict.Where(p => p.Key == new Vector2(x, y)).First().Value;
+
+            // return hexes[x, y];
+        }
+        catch
+        {
+            Debug.LogError("GetHexAt: " + x + "," + y);
+            return null;
+        }
+    }
+
+    public Hex[] GetHexesWithinRangeOf(Hex centerHex, int range)
+    {
+        List<Hex> results = new List<Hex>();
+
+        // var results = []
+        // for each -N ≤ x ≤ +N:
+        //     for each max(-N, -x-N) ≤ y ≤ min(+N, -x+N):
+        //         var z = -x-y
+        //         results.append(cube_add(center, Cube(x, y, z)))
+
+        for (int x = -range; x < range; x++)
+        {
+            //left-down | | right up
+            for (int y = Mathf.Max(-range, -x-range); y < Mathf.Min(range + 1, -x+range + 1); y++)
+            {
+                Debug.Log(centerHex.Q + x +"/" + centerHex.R + y);
+                var hex = GetHexAt(centerHex.Q + x, centerHex.R + y);
+
+                if(hex != null)
+                    results.Add( hex );
+
+            }
+        }
+
+        // for (int dx = -range; dx < range-1; dx++)
+        // {
+        //     for (int dy = Mathf.Max(-range+1, -dx-range); dy < Mathf.Min(range, -dx+range-1); dy++)
+        //     {
+        //         Debug.Log(dx + "/" + dy);
+        //         var hex = GetHexAt(centerHex.Q + dx, centerHex.R + dy);
+
+        //         if(hex != null)
+        //             results.Add( GetHexAt(centerHex.Q + dx, centerHex.R + dy) );
+        //     }
+        // }
+
+        return results.ToArray();
     }
 
     public void UpdateTileVisuals(){
@@ -164,8 +236,6 @@ public class HexMap : MonoBehaviour
     }
 
     public void UpdateVisualsForSingleHex(GameObject hexGO){
-
-        Debug.Log("A");
 
         Hex hex = GameObjectToHexMap[hexGO];
 
