@@ -20,8 +20,7 @@ public class HexMap : MonoBehaviour
     public PlayerController PlayerController; //gotta change this - probably game controller
 
     private IBiome biome;
-    public Hex[,] hexes; //this must be private? //AAAA
-    Dictionary<Vector2, Hex> wtfDict = new Dictionary<Vector2, Hex>(); //BBBB
+    Dictionary<Vector2, Hex> hexes = new Dictionary<Vector2, Hex>();
     public Dictionary<Hex, GameObject> HexToGameObjectMap;
     public Dictionary<GameObject, Hex> GameObjectToHexMap;
 
@@ -57,7 +56,7 @@ public class HexMap : MonoBehaviour
 
     public void GenerateMap() {
 
-        hexes = new Hex[NumCols, NumRows];
+        hexes = new Dictionary<Vector2, Hex>();
         HexToGameObjectMap = new Dictionary<Hex, GameObject>();
         GameObjectToHexMap = new Dictionary<GameObject, Hex>();
         
@@ -77,7 +76,7 @@ public class HexMap : MonoBehaviour
 
                 //TODO: fix this shit
                 // hexes[q + r_offset, r] = hex;
-                wtfDict.Add(new Vector2(q, r), hex);
+                hexes.Add(new Vector2(q, r), hex);
 
                 //TEMP
                 if(hasAssignedAsStart)
@@ -132,12 +131,7 @@ public class HexMap : MonoBehaviour
 
     public Hex GetHexAt(int x, int y)
     {
-        // var h = hexes[x,y];
-        // return h;
-
-        // Debug.Log("Hexes:" + hexes.Length);
-
-        if(wtfDict == null)
+        if(hexes == null)
         {
             Debug.LogError("Hexes array not yet instantiated.");
             return null;
@@ -145,9 +139,7 @@ public class HexMap : MonoBehaviour
 
         try {
 
-            return wtfDict.Where(p => p.Key == new Vector2(x, y)).First().Value;
-
-            // return hexes[x, y];
+            return hexes.Where(p => p.Key == new Vector2(x, y)).First().Value;
         }
         catch
         {
@@ -160,15 +152,8 @@ public class HexMap : MonoBehaviour
     {
         List<Hex> results = new List<Hex>();
 
-        // var results = []
-        // for each -N ≤ x ≤ +N:
-        //     for each max(-N, -x-N) ≤ y ≤ min(+N, -x+N):
-        //         var z = -x-y
-        //         results.append(cube_add(center, Cube(x, y, z)))
-
-        for (int x = -range; x < range; x++)
+        for (int x = -range; x < range +1; x++)
         {
-            //left-down | | right up
             for (int y = Mathf.Max(-range, -x-range); y < Mathf.Min(range + 1, -x+range + 1); y++)
             {
                 Debug.Log(centerHex.Q + x +"/" + centerHex.R + y);
@@ -179,18 +164,6 @@ public class HexMap : MonoBehaviour
 
             }
         }
-
-        // for (int dx = -range; dx < range-1; dx++)
-        // {
-        //     for (int dy = Mathf.Max(-range+1, -dx-range); dy < Mathf.Min(range, -dx+range-1); dy++)
-        //     {
-        //         Debug.Log(dx + "/" + dy);
-        //         var hex = GetHexAt(centerHex.Q + dx, centerHex.R + dy);
-
-        //         if(hex != null)
-        //             results.Add( GetHexAt(centerHex.Q + dx, centerHex.R + dy) );
-        //     }
-        // }
 
         return results.ToArray();
     }

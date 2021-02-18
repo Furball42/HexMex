@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         anchorPosition.y += 1.5f;
 
         //test gethex
-        var startHex = hexMap.GetHexAt(2,5);
+        var startHex = hexMap.GetHexAt(1,6);
         var startHexGO = hexMap.HexToGameObjectMap[startHex];
 
         GameObject mexGO = Instantiate(firstMex, startHexGO.transform.position, Quaternion.identity, PlayerMexContainer.transform);

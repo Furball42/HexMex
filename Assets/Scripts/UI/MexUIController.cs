@@ -36,19 +36,8 @@ public class MexUIController : MonoBehaviour
 
     void HighlightPossibleMovementHexes(Mex mex){
 
-        // Hex h = HexMap.GetHexAt(SelectedMex.Hex.Q, SelectedMex.Hex.R);
-        // GameObject hexGO = HexMap.HexToGameObjectMap[h];
-        // GameObject model = hexGO.transform.Find("HexModel").gameObject;
-        // MeshRenderer mr = model.GetComponentInChildren<MeshRenderer>();
-        // MeshFilter mf = model.GetComponentInChildren<MeshFilter>();
-        // MeshCollider mc = model.GetComponentInChildren<MeshCollider>();
-        // mr.material.color = Color.red;
-
         Hex[] listOfPossibleMovement = HexMap.GetHexesWithinRangeOf(SelectedMex.Hex, SelectedMex.Unit.Speed);
-        Debug.Log(listOfPossibleMovement.Length);
         foreach(Hex h in listOfPossibleMovement){
-            // Debug.Log(h.Q + "/" + h.R);
-
             //test
             GameObject hexGO = HexMap.HexToGameObjectMap[h];
             GameObject model = hexGO.transform.Find("HexModel").gameObject;
@@ -59,11 +48,22 @@ public class MexUIController : MonoBehaviour
         }
     }
 
+    void UnhighlightPossibleMovementHexes(Mex mex){
+
+        Hex[] listOfPossibleMovement = HexMap.GetHexesWithinRangeOf(SelectedMex.Hex, SelectedMex.Unit.Speed);
+        foreach(Hex h in listOfPossibleMovement){
+
+            GameObject hexGO = HexMap.HexToGameObjectMap[h];
+            HexMap.UpdateVisualsForSingleHex(hexGO);
+        }
+    }
+
     void ClearUI(){
         MexName.text = string.Empty;
         MexSpeed.text = string.Empty;
         MexArmor.text = string.Empty;
         MexInternal.text = string.Empty;
+        UnhighlightPossibleMovementHexes(SelectedMex);
         SelectedMex = null;
     }
 }
