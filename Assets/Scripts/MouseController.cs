@@ -5,7 +5,8 @@ using UnityEngine;
 public class MouseController : MonoBehaviour
 {
     public GameObject SelectedObject;
-    public GameObject HoveredObject;    
+    public GameObject HoveredObject;
+    public PlayerController PlayerController;
     public HexMap HexMap;
 
     // Start is called before the first frame update
@@ -25,9 +26,10 @@ public class MouseController : MonoBehaviour
         int layer_mask = LayerMask.GetMask("Terrain", "Mex");
         RaycastHit hitInfo = new RaycastHit();
         bool hit = Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, layer_mask);
-        
+                
         if(hit){
 
+            //check for terrain info
             if(hitInfo.transform.gameObject.layer == 8){
                 SetHoveredObject(hitInfo.transform.gameObject);
             }
@@ -44,9 +46,10 @@ public class MouseController : MonoBehaviour
 
                 GameObject hitGO = hitInfo.transform.gameObject;
 
-                if (hitGO.tag == "Mex")
+                if (hitGO.tag == "Mex") //click on me
                 {
                     Mex mex = hitInfo.transform.gameObject.GetComponent<Mex>();
+                    PlayerController.SelectedMex = mex;
                     SelectObject(hitGO);
                 }
                 else
@@ -55,10 +58,7 @@ public class MouseController : MonoBehaviour
         } 
     }
 
-    private void SetHoveredObject(GameObject hoveredGO){
-        
-        // if(HoveredObject != null)
-        //     HoveredObject = null;
+    private void SetHoveredObject(GameObject hoveredGO){        
 
         if(hoveredGO.tag == "Terrain"){                        
 
@@ -101,5 +101,6 @@ public class MouseController : MonoBehaviour
         }
 
         SelectedObject = null;
+        PlayerController.SelectedMex = null;
     }
 }

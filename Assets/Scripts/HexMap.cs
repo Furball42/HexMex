@@ -143,7 +143,7 @@ public class HexMap : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("GetHexAt: " + x + "," + y);
+            // Debug.LogError("GetHexAt: " + x + "," + y);
             return null;
         }
     }
@@ -156,7 +156,6 @@ public class HexMap : MonoBehaviour
         {
             for (int y = Mathf.Max(-range, -x-range); y < Mathf.Min(range + 1, -x+range + 1); y++)
             {
-                Debug.Log(centerHex.Q + x +"/" + centerHex.R + y);
                 var hex = GetHexAt(centerHex.Q + x, centerHex.R + y);
 
                 if(hex != null)
@@ -275,7 +274,7 @@ public class HexMap : MonoBehaviour
     }
 
     private void AddBoard(){
-        Vector3 boardPosition = new Vector3(13.45f, -0.5f, 8.45f);
+        Vector3 boardPosition = new Vector3(16.7f, -0.5f, 8.45f);
         Instantiate(Board, boardPosition, Quaternion.identity, this.transform);
     }
 }

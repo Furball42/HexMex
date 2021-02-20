@@ -10,6 +10,7 @@ public class TerrainUIController : MonoBehaviour
     public Text TerrainElevation;
     public Text TerrainCover;
     public MouseController MouseController;
+    public PlayerController PlayerController;
     public HexMap HexMap;
     public Material HighLightMaterial;
 
@@ -18,9 +19,11 @@ public class TerrainUIController : MonoBehaviour
     {
         if(MouseController.HoveredObject != null)
         {
-            Hex hex = HexMap.GameObjectToHexMap[MouseController.HoveredObject];
-            HighlightHexObject(MouseController.HoveredObject);
+            Hex hex = HexMap.GameObjectToHexMap[MouseController.HoveredObject];            
             UpdateHoverdHexInfo(hex);
+
+            if(PlayerController.SelectedMex == null)
+                HighlightHexObject(MouseController.HoveredObject);
         }
         else
             ClearUI();
@@ -41,7 +44,10 @@ public class TerrainUIController : MonoBehaviour
         var model = hexGO.transform.Find("HexModel");
         MeshRenderer mr = model.transform.GetComponent<MeshRenderer>();
         mr.material = HighLightMaterial;
-        // mr.material.color = Color.red;
+    }
+
+    void UnhighlightHexObject(GameObject hexGO){        
+        // HexMap.UpdateVisualsForSingleHex(hexGO);
     }
 
     void ClearUI(){

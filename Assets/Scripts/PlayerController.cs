@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public GameObject HexMapGO;
     public GameObject[] PlayerMex;
     public GameObject PlayerMexContainer;
-
+    public Mex SelectedMex;
 
     void Start()
     {
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         anchorPosition.y += 1.5f;
 
         //test gethex
-        var startHex = hexMap.GetHexAt(1,6);
+        var startHex = hexMap.GetHexAt(0,4);
         var startHexGO = hexMap.HexToGameObjectMap[startHex];
 
         GameObject mexGO = Instantiate(firstMex, startHexGO.transform.position, Quaternion.identity, PlayerMexContainer.transform);
