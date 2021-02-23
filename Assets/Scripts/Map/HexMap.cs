@@ -29,7 +29,6 @@ public class HexMap : MonoBehaviour
         SetupBiome();
         GenerateMap();
         PlayerController.GeneratePlayerMex();
-        HexMapHelper.GetLineDrawingHexes(HexMapHelper.GetHexAt(4,7,hexes), HexMapHelper.GetHexAt(2,2,hexes));
     }
 
     void Update()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MexUIController : MonoBehaviour
 {
@@ -9,16 +10,20 @@ public class MexUIController : MonoBehaviour
     public Text MexSpeed;
     public Text MexArmor;
     public Text MexInternal;
-    public MouseController MouseController;
-    private Mex SelectedMex;
+    public MouseController MouseController;    
     public HexMap HexMap;
     public GameObject ActionPanel;
     public GameObject InfoPanel;
+
+    private LineRenderer lineRenderer;
+    private bool showMovementPath = false;
+    private Mex SelectedMex;
 
     //REFACTOR TO PROPERLY HANDLE HTE SELECTEDMEX
     void Start() {
         ActionPanel.SetActive(false);
         InfoPanel.SetActive(false);
+        lineRenderer = gameObject.GetComponent<LineRenderer>();
     }
     
     void Update()
@@ -30,9 +35,31 @@ public class MexUIController : MonoBehaviour
             // HighlightPossibleMovementHexes(SelectedMex);
             ActionPanel.SetActive(true);
             InfoPanel.SetActive(true);
+            
         }
         else
             ClearUI();
+
+        if(MouseController.HoveredObject != null && showMovementPath){
+            TraceMexMovementPath();
+        }  
+    }
+
+    void TraceMexMovementPath() {
+
+        Hex[] path = HexMapHelper.GetLineDrawingHexes(SelectedMex.Hex, HexMap.GameObjectToHexMap[MouseController.HoveredObject]);
+        lineRenderer.positionCount = path.Length;
+
+        for (int h = 0; h < path.Length; h++){
+
+            GameObject hexGO = HexMap.HexToGameObjectMap[HexMapHelper.GetHexAt(path[h].Q, path[h].R, HexMap.hexes)];
+
+            for (int i = 0; i < hexGO.transform.childCount; i++)
+            {
+                if(hexGO.transform.GetChild(i).name == "LineAnchor")
+                    lineRenderer.SetPosition(h, hexGO.transform.GetChild(i).transform.position);
+            }
+        }
     }
 
     void UpdateSelectedMexStats(Mex mex){
@@ -45,6 +72,8 @@ public class MexUIController : MonoBehaviour
     public void HighlightPossibleMovementHexes(Mex mex){
 
         UnhighlightPossibleMovementHexes(mex);
+
+        showMovementPath = true;
 
         if(mex != null){
             Hex[] listOfPossibleMovement = HexMapHelper.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed, HexMap.hexes); //HexMap.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed);
@@ -105,6 +134,8 @@ public class MexUIController : MonoBehaviour
                 GameObject hexGO = HexMap.HexToGameObjectMap[h];
                 HexMap.UpdateVisualsForSingleHex(hexGO);
             }
+
+            showMovementPath = false;
         }        
     }
 
