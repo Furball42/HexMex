@@ -47,7 +47,7 @@ public class MexUIController : MonoBehaviour
         UnhighlightPossibleMovementHexes(mex);
 
         if(mex != null){
-            Hex[] listOfPossibleMovement = HexMap.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed);
+            Hex[] listOfPossibleMovement = HexMapHelper.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed, HexMap.hexes); //HexMap.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed);
 
             foreach(Hex h in listOfPossibleMovement){
 
@@ -64,7 +64,7 @@ public class MexUIController : MonoBehaviour
         UnhighlightPossibleMovementHexes(mex);
 
         if(mex != null){
-            Hex[] listOfPossibleMovement = HexMap.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed);
+            Hex[] listOfPossibleMovement = HexMapHelper.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed, HexMap.hexes); //HexMap.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed);
 
             foreach(Hex h in listOfPossibleMovement){
 
@@ -99,7 +99,7 @@ public class MexUIController : MonoBehaviour
     public void UnhighlightPossibleMovementHexes(Mex mex){
 
         if(mex != null){
-            Hex[] listOfPossibleMovement = HexMap.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed);
+            Hex[] listOfPossibleMovement = HexMapHelper.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed, HexMap.hexes); //HexMap.GetHexesWithinRangeOf(mex.Hex, mex.Unit.Speed);
             foreach(Hex h in listOfPossibleMovement){
 
                 GameObject hexGO = HexMap.HexToGameObjectMap[h];

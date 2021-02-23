@@ -41,8 +41,10 @@
      <Compile Include="Assets\Scripts\Biomes\IBiome.cs" />
      <Compile Include="Assets\Scripts\Biomes\TundraBiome.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
-     <Compile Include="Assets\Scripts\Hex.cs" />
-     <Compile Include="Assets\Scripts\HexMap.cs" />
+     <Compile Include="Assets\Scripts\Map\Cube.cs" />
+     <Compile Include="Assets\Scripts\Map\Hex.cs" />
+     <Compile Include="Assets\Scripts\Map\HexMap.cs" />
+     <Compile Include="Assets\Scripts\Map\HexMapHelper.cs" />
      <Compile Include="Assets\Scripts\MouseController.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\UI\MexUIController.cs" />
