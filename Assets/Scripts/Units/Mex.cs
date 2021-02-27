@@ -39,7 +39,7 @@ public class Mex : MonoBehaviour
 
             if(this == mouseSelectedObj){
 
-                CurrentActionMode = MexAction.Idle;                
+                // CurrentActionMode = MexAction.Idle;                
 
                 if(Input.GetKeyUp(KeyCode.Alpha1))
                     CurrentActionMode = MexAction.Move;
@@ -61,12 +61,10 @@ public class Mex : MonoBehaviour
 
     private void HandleActionPressed(){
         if(CurrentActionMode == MexAction.Move){
-            Debug.Log(CurrentActionMode);
             mexUIController.HighlightPossibleMovementHexes(this);
         }
 
         if(CurrentActionMode == MexAction.Jump){
-            Debug.Log(CurrentActionMode);
             mexUIController.HighlightPossibleJumpHexes(this);
         }
     }

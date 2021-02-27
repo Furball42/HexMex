@@ -7,6 +7,7 @@ public class MouseController : MonoBehaviour
     public GameObject SelectedObject;
     public GameObject HoveredObject;
     public PlayerController PlayerController;
+    public MexUIController MexUIController;
     public HexMap HexMap;
 
     // Start is called before the first frame update
@@ -52,10 +53,36 @@ public class MouseController : MonoBehaviour
                     PlayerController.SelectedMex = mex;
                     SelectObject(hitGO);
                 }
+                else if (hitGO.tag == "Terrain"){                    
+
+   
+                    if(MexUIController.SelectedMex != null)
+                    {
+                        Debug.Log(MexUIController.SelectedMex.CurrentActionMode);
+                        if(MexUIController.SelectedMex.CurrentActionMode == Mex.MexAction.Move){
+                            //init mex move
+                            Debug.Log("MOVE HERE");
+                        }
+                        else if(MexUIController.SelectedMex.CurrentActionMode == Mex.MexAction.Idle){
+                            Debug.Log("DESELECT MEX");
+                            ClearSelectedObject();  
+                        }
+                    }
+                    else
+                        ClearSelectedObject();       
+                }
                 else
                     ClearSelectedObject();
             }
-        } 
+        }
+
+        if(Input.GetMouseButtonDown(1)){
+        
+            if(MexUIController.SelectedMex != null){
+                MexUIController.SelectedMex.CurrentActionMode = Mex.MexAction.Idle;
+                MexUIController.UnhighlightPossibleMovementHexes(MexUIController.SelectedMex); //TODO: this circular ref is wrong
+            }
+        }
     }
 
     private void SetHoveredObject(GameObject hoveredGO){        
@@ -88,6 +115,8 @@ public class MouseController : MonoBehaviour
     }
 
     private void ClearSelectedObject(){
+
+        Debug.Log("ClearSelectedObject");
 
         if(SelectedObject == null){            
             return;

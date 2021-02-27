@@ -14,10 +14,11 @@ public class MexUIController : MonoBehaviour
     public HexMap HexMap;
     public GameObject ActionPanel;
     public GameObject InfoPanel;
+    public Mex SelectedMex;
 
     private LineRenderer lineRenderer;
     private bool showMovementPath = false;
-    private Mex SelectedMex;
+    
 
     //REFACTOR TO PROPERLY HANDLE HTE SELECTEDMEX
     void Start() {
@@ -30,9 +31,12 @@ public class MexUIController : MonoBehaviour
     {
         if(MouseController.SelectedObject != null)
         {
-            SelectedMex = MouseController.SelectedObject.GetComponent<Mex>();
+            Mex newMex = MouseController.SelectedObject.GetComponent<Mex>();
+
+            if(newMex != SelectedMex)
+                SelectedMex = MouseController.SelectedObject.GetComponent<Mex>();
+
             UpdateSelectedMexStats(SelectedMex);
-            // HighlightPossibleMovementHexes(SelectedMex);
             ActionPanel.SetActive(true);
             InfoPanel.SetActive(true);
             
@@ -50,15 +54,20 @@ public class MexUIController : MonoBehaviour
         Hex[] path = HexMapHelper.GetLineDrawingHexes(SelectedMex.Hex, HexMap.GameObjectToHexMap[MouseController.HoveredObject]);
         lineRenderer.positionCount = path.Length;
 
+        if(path.Length > SelectedMex.Unit.Speed)
+            lineRenderer.positionCount = SelectedMex.Unit.Speed + 1;
+
         for (int h = 0; h < path.Length; h++){
 
             GameObject hexGO = HexMap.HexToGameObjectMap[HexMapHelper.GetHexAt(path[h].Q, path[h].R, HexMap.hexes)];
 
-            for (int i = 0; i < hexGO.transform.childCount; i++)
-            {
-                if(hexGO.transform.GetChild(i).name == "LineAnchor")
-                    lineRenderer.SetPosition(h, hexGO.transform.GetChild(i).transform.position);
-            }
+            if(h <= SelectedMex.Unit.Speed) {
+                for (int i = 0; i < hexGO.transform.childCount; i++)
+                {
+                    if(hexGO.transform.GetChild(i).name == "LineAnchor")
+                        lineRenderer.SetPosition(h, hexGO.transform.GetChild(i).transform.position);
+                }
+            }            
         }
     }
 
@@ -139,7 +148,7 @@ public class MexUIController : MonoBehaviour
         }        
     }
 
-    void ClearUI(){
+    public void ClearUI(){
         MexName.text = string.Empty;
         MexSpeed.text = string.Empty;
         MexArmor.text = string.Empty;
@@ -148,5 +157,6 @@ public class MexUIController : MonoBehaviour
         SelectedMex = null;
         ActionPanel.SetActive(false);
         InfoPanel.SetActive(false);
+        lineRenderer.positionCount = 0;
     }
 }
